@@ -33,6 +33,6 @@ User: admin
 Password: admin
 ```
 
-## Documentation
+## API Documentation
 
 To see the Swagger documentation, open a browser and navigate to: http://localhost:3000/api
