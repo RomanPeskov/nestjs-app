@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 
 import constants from '../../constants';
 import { Manufacturer } from './manufacturer.entity';
@@ -11,10 +11,16 @@ export class ManufacturerService {
   ) {}
 
   async getManufacture(manufacturerId): Promise<Manufacturer> {
-    return this.manufacturesRepository.findOne<Manufacturer>({
+    const manufacturer = await this.manufacturesRepository.findOne<Manufacturer>({
       where: {
         id: manufacturerId,
       },
     });
+
+    if (!manufacturer) {
+      throw new NotFoundException();
+    }
+
+    return manufacturer;
   }
 }

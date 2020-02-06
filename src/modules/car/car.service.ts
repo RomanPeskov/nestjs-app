@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Op } from 'sequelize';
 import { setMonth } from 'date-fns';
@@ -26,25 +26,47 @@ export class CarService {
   }
 
   async updateCar(id, car): Promise<Car> {
-    const [_, [updatedCar]] = await this.carsRepository.update(car, { where: { id }, returning: true });
+    const [carId, [updatedCar]] = await this.carsRepository.update(car, { where: { id }, returning: true });
+    if (!carId) {
+      throw new NotFoundException();
+    }
     return updatedCar;
   }
 
   async deleteCar(carId): Promise<number> {
-    return this.carsRepository.destroy({
+    const car = await this.findCar(carId);
+
+    if (!car) {
+      throw new NotFoundException();
+    }
+
+    const deleteCar = await this.carsRepository.destroy({
       where: {
         id: carId,
       },
     });
+
+    return deleteCar;
   }
 
   async getCar(carId): Promise<Car> {
-    return this.carsRepository.findOne({
+    const car = await this.findCar(carId);
+    return car;
+  }
+
+  async findCar(carId): Promise<Car> {
+    const car = await this.carsRepository.findOne({
       where: {
         id: carId,
       },
       include: [{ model: Manufacturer }],
     });
+
+    if (!car) {
+      throw new NotFoundException();
+    }
+
+    return car;
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
