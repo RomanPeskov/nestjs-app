@@ -26,8 +26,8 @@ export class CarService {
   }
 
   async updateCar(id, car): Promise<Car> {
-    const [carId, [updatedCar]] = await this.carsRepository.update(car, { where: { id }, returning: true });
-    if (!carId) {
+    const [carsUpdated, [updatedCar]] = await this.carsRepository.update(car, { where: { id }, returning: true });
+    if (!carsUpdated) {
       throw new NotFoundException();
     }
     return updatedCar;
