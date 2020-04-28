@@ -9,4 +9,5 @@ import { OwnerModule } from './modules/owner/owner.module';
 @Module({
   imports: [DatabaseModule, ManufacturerModule, CarModule, OwnerModule, ScheduleModule.forRoot()],
 })
+
 export class AppModule {}
