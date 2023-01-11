@@ -29,7 +29,7 @@
     "@types/moment": "^2.13.0",
     "@types/sequelize": "^4.28.8",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.11.0",
+    "class-validator": "^0.14.0",
     "date-fns": "^2.9.0",
     "pg": "^7.18.1",
     "pg-hstore": "^2.3.3",
